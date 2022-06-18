@@ -62,12 +62,48 @@ def getAttribute() -> str:
         print("Given attribute is not valid. Exiting program.")
         quit()
 
-    return attribute
+    return attribute.upper()
+
+'''
+Given the lines from the file, split it into 2 halves: Those that have the given attribute
+and those that do not
+
+Args:
+    lines: The lines of text from the given file.
+    attribute: The attribute that is going to be used for sorting
+
+Returns:
+    Two lists which contain the lines that have the attribute and lines that do not (has_attr, no_attr)
+'''
+def splitFile(lines: list[str], attribute: str) -> tuple[list[str], list[str]]:
+    has_attr = []
+    no_attr = []
+    i = 0
+    while i < len(lines): 
+        if attribute in lines[i]:
+            # Edge case in which we want to keep the vod.m3u8 lines coupled with the #EXT-X-STREAM-INF tag
+            if lines[i].startswith("#EXT-X-STREAM-INF"):
+                has_attr.append(lines[i] + lines[i+1])
+                # The following line will be the vod.m3u8 line. Since we are adding that to the current line, skip the next one.
+                i += 2
+            else:
+                has_attr.append(lines[i])
+                i += 1
+        else:
+            no_attr.append(lines[i])
+            i += 1
+    
+    return (has_attr, no_attr)
+
+
+def sortFile(lines: list[str], attribute: str):
+    has_attr, no_attr = splitFile(lines, attribute)
+    
+    return 
 
 # filename = downloadFile()
 # lines = cleanFile(filename)
 lines = cleanFile('file_to_sort.m3u8')
-
-
 attribute = getAttribute()
 
+sortFile(lines, attribute)
