@@ -1,4 +1,3 @@
-from urllib import response
 import requests
 
 '''
@@ -11,7 +10,8 @@ Args:
 Returns:
     The string representation of the name of the new file downloaded.
 '''
-def downloadFile(link: str) -> str:
+def downloadFile() -> str:
+    link = input("Please provide the link for the file you would like to sort: ")
     if not link.endswith('.m3u8'):
         print('Error. Link will not download m3u8 file. \n Exiting program.')
         quit()
@@ -30,7 +30,7 @@ Args:
 Returns:
     The file contents after removing all the extra newline lines.
 '''
-def cleanFile(filename: str):
+def cleanFile(filename: str) -> list[str]:
     file = open(filename, 'r')
     lines = file.readlines()
     
@@ -40,8 +40,34 @@ def cleanFile(filename: str):
     
     return lines
 
-link = input("Please provide the link for the file you would like to sort: ")
-filename = downloadFile(link)
+'''
+Obtains a valid attribute form the user to sort with
+
+Returns:
+    The input attribute after verifying that it is a valid attribute.
+'''
+def getAttribute() -> str:
+    attribute = input("Please specify which attribute to use for sorting: ")
+
+    valid_attrs = {'GROUP-ID', 
+                   'NAME', 
+                   'LANGUAGE', 
+                   'BANDWIDTH', 
+                   'AVERAGE-BANDWIDTH', 
+                   'CODECS', 
+                   'RESOLUTION', 
+                   'FRAME-RATE'}
+
+    if attribute.upper() not in valid_attrs:
+        print("Given attribute is not valid. Exiting program.")
+        quit()
+
+    return attribute
+
+# filename = downloadFile()
 # lines = cleanFile(filename)
 lines = cleanFile('file_to_sort.m3u8')
+
+
+attribute = getAttribute()
 
