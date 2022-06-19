@@ -222,10 +222,17 @@ Returns:
 '''
 def writeToNewFile(heap: list, no_attrs: list) -> None:
     new_file = open('sorted_file.m3u8', 'w')
-
+    current_group = 0
     # Since the heap is already sorted, we just need need to write the line that is popped out.
     while heap:
-        line = heappop(heap)[2]
+        group, _, line = heappop(heap)
+
+        # If we start printing out a new group of tags, then add a newline before writing
+        # for the sake of formatting the same groups together.
+        if current_group != group:
+            new_file.write('\n')
+            current_group = group
+
         new_file.write(line)
    
     new_file.write('\n')
