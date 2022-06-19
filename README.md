@@ -27,7 +27,7 @@ foo@bar:~/m3u8-Sorting-Problem/$ python .\__pycache__\<name of compile file>.pyc
 ### Using The Solution
 After running the program, you will be prompted twice.
 
-The first prompt will ask for a valid download link. For this program, a link is considered valid if the it would result in downloading a `.m3u8 file.` Any links provided that would *not* result in a `.m3u8` file will be caught and program will exit after returning an error message.
+The first prompt will ask for a valid download link. For this program, a link is considered valid if the it would result in downloading a `.m3u8 file.` Any links provided that would *not* result in a `.m3u8` file will be caught and the program will exit after returning an error message.
 
 The second prompt will ask for a valid attribute to conduct the sorting with. An attribute is considered valid if it is one of the following (**not** case-sensitive):
 * GROUP-ID 
