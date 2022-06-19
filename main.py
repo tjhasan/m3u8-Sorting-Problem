@@ -35,6 +35,7 @@ def cleanFile(filename: str) -> list[str]:
     file = open(filename, 'r')
     lines = file.readlines()
     
+    # Removes lines from the doc that only consist of a newline char.
     for line in lines:
         if line == '\n':
             lines.remove(line)
@@ -50,6 +51,7 @@ Returns:
 def getAttribute() -> str:
     attribute = input("Please specify which attribute to use for sorting: ")
 
+    # More attrs can be added to this if need be.
     valid_attrs = {'GROUP-ID', 
                    'NAME', 
                    'LANGUAGE', 
@@ -81,6 +83,7 @@ def splitFile(lines: list[str], attribute: str) -> tuple[list[str], list[str]]:
     no_attr = []
     i = 0
     while i < len(lines): 
+        # If the attribute we are sorting by is in the current line, save it to has_attr.
         if attribute in lines[i]:
             # Edge case in which we want to keep the vod.m3u8 lines coupled with the #EXT-X-STREAM-INF tag
             if lines[i].startswith("#EXT-X-STREAM-INF"):
@@ -90,6 +93,7 @@ def splitFile(lines: list[str], attribute: str) -> tuple[list[str], list[str]]:
             else:
                 has_attr.append(lines[i])
                 i += 1
+        # If the attribute is NOT in the current line, then add it to no_attr
         else:
             # Edge case in which we want to keep the vod.m3u8 lines coupled with the #EXT-X-STREAM-INF tag
             if lines[i].startswith("#EXT-X-STREAM-INF"):
@@ -115,12 +119,20 @@ Returns:
     A string representation of the value given the current attribute in the current tag.
 '''
 def getValue(tag: str, attribute: str) -> str:
+    # We make a copy of the current tag because we don't want to change the tag itself.
     temp = tag
+    # Get the ENDING index of the target attribute. The +1 gets rid of the '='
     start = temp.find(attribute) + len(attribute) + 1
+
+    # Augment temp so that our string now starts at the end of the target attribute.
+    # Meaning that the string up to the ',' is our value for the given attribute.
     temp = temp[start::]
     finish = temp.find(',')
+
+    # Now that we have our start and finish, get the actual value.
     value = temp[:finish:]
 
+    # If the attribute is resolution, then evalute the actual resolution by multiplying the pixel lengths.
     if attribute == "RESOLUTION":
         value = value.replace("x", ' * ')
         value = str(eval(value))
@@ -163,25 +175,36 @@ Returns:
     well as the tags which do not have the target attribute.
 '''
 def sortFile(lines: list[str], attribute: str) -> tuple[list, list]:
+    # Split the file between tags that have and do not have the target attribute.
     has_attr, no_attr = splitFile(lines, attribute)
-    heap = []
 
+    # We use a heap here to make sorting easier to read.
+    heap = []
+    # Keep track of which tags have already been added to the heap.
+    # This will help keep similar tags grouped together.
     current_tags_types = []
 
     for tag in has_attr:
+        # Get the value given the attribute.
         if attribute == 'CODECS':
             value = getValueCodecs(tag, attribute)
         else:
             value = getValue(tag, attribute)
-    
+
+        # If the value we get is a raw integer, then convert it from string to integer.
+        # I do this in order to ensure that the sorting does not fail due to 
+        # ascii value comparison.    
         if value.isdigit():
             value = int(value)
         
+        # The type of tag we have is the string that exist from index 0 up to the first ':'
         tag_type = tag[:tag.find(":"):]
 
         if tag_type not in current_tags_types:
             current_tags_types.append(tag_type)
 
+        # Since we push the index of the given tag_type to the heap, it will keep the same tags
+        # together while also sorting those tags based on their attribute values.
         heappush(heap, (current_tags_types.index(tag_type), value, tag))
     return (heap, no_attr)
 
@@ -199,18 +222,24 @@ Returns:
 '''
 def writeToNewFile(heap: list, no_attrs: list) -> None:
     new_file = open('sorted_file.m3u8', 'w')
+
+    # Since the heap is already sorted, we just need need to write the line that is popped out.
     while heap:
         line = heappop(heap)[2]
         new_file.write(line)
    
+    new_file.write('\n')
+
+    # Now that all of the tags that had the target attributes are written, write all of the non-sorted
+    # tags to the new file. 
     for line in no_attrs:
         new_file.write(line)
 
+    new_file.close()
     return
 
-# filename = downloadFile()
-# lines = cleanFile(filename)
-lines = cleanFile('test.m3u8')
+filename = downloadFile()
+lines = cleanFile(filename)
 attribute = getAttribute()
 heap, no_attrs = sortFile(lines, attribute)
 writeToNewFile(heap, no_attrs)
