@@ -15,7 +15,7 @@ However, in the scenario in which you would like to compile the code without exe
 foo@bar:~/m3u8-Sorting-Problem/$ python -m compileall
 ```
 
-This will create a director called `__pycache__` which will contain a .pyc file. This is the compile code for the main.py file.
+This will create a director called `__pycache__` which will contain a .pyc file. This is the compiled code for the main.py file.
 
 If you would like to run the compile code, please use the following command:
 ```console
