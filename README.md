@@ -38,4 +38,5 @@ The second prompt will ask for a valid attribute to conduct the sorting with. An
 * CODECS 
 * RESOLUTION 
 * FRAME-RATE
+
 If an invalid attribute is given, then the program will return an error message and exit.
