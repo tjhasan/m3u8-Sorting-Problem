@@ -1,5 +1,5 @@
 # Sorting m3u8 File
-This respository holds the source code in order that, when run, will download and sort a target .m3u8 file given a valid attribute to sort by.
+This respository holds the source code that, when run, will download and sort a target .m3u8 file given a valid attribute to sort by.
 
 ## Prerequisites
 In order to run this program, you must be using Python `3.9.x` or greater. 
