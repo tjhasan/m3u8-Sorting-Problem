@@ -10,6 +10,10 @@ Args:
 
 Returns:
     The string representation of the name of the new file downloaded.
+
+Time Complexity: O(k)
+    k: Time it takes for the file to download from the given link.
+Space Complexity: O(1)
 '''
 def downloadFile() -> str:
     link = input("Please provide the link for the file you would like to sort: ")
@@ -30,6 +34,11 @@ Args:
 
 Returns:
     The file contents after removing all the extra newline lines.
+
+Time Complexity: O(N)
+    N: Numner of lines in the file
+Space Complexity: O(N)
+    N: Numner of lines in the file
 '''
 def cleanFile(filename: str) -> list[str]:
     file = open(filename, 'r')
@@ -47,6 +56,9 @@ Obtains a valid attribute form the user to sort with
 
 Returns:
     The input attribute after verifying that it is a valid attribute.
+
+Time Complexity: O(1)
+Space Complexity: O(1)
 '''
 def getAttribute() -> str:
     attribute = input("Please specify which attribute to use for sorting: ")
@@ -77,6 +89,12 @@ Args:
 
 Returns:
     Two lists which contain the lines that have the attribute and lines that do not (has_attr, no_attr)
+
+Time Complexity: O(N*k)
+    N: Number of lines in the file.
+    k: Length of the longest line in the file.
+Space Complexity: O(N)
+    N: Number of lines in the file.
 '''
 def splitFile(lines: list[str], attribute: str) -> tuple[list[str], list[str]]:
     has_attr = []
@@ -117,6 +135,9 @@ Args:
 
 Returns:
     A string representation of the value given the current attribute in the current tag.
+
+Time Complexity: O(1)
+Space Complexity: O(1)
 '''
 def getValue(tag: str, attribute: str) -> str:
     # We make a copy of the current tag because we don't want to change the tag itself.
@@ -151,6 +172,9 @@ Args:
 
 Returns:
     A string representation of the value given the current attribute in the current tag.
+
+Time Complexity: O(1)
+Space Complexity: O(1)
 '''
 def getValueCodecs(tag: str, attribute: str):
     temp = tag
@@ -173,6 +197,12 @@ Args:
 Returns:
     A Tuple which contains both the sorted portion of the file as
     well as the tags which do not have the target attribute.
+
+Time Complexity: O(NLog(N))
+    N: Number of lines in the file
+Space Complexity: O(N + M)
+    N: Number of lines in the file
+    M: Number of distint tags in the file.
 '''
 def sortFile(lines: list[str], attribute: str) -> tuple[list, list]:
     # Split the file between tags that have and do not have the target attribute.
@@ -184,7 +214,7 @@ def sortFile(lines: list[str], attribute: str) -> tuple[list, list]:
     # This will help keep similar tags grouped together.
     current_tags_types = []
 
-    for tag in has_attr:
+    for tag in has_attr: # O(N)
         # Get the value given the attribute.
         if attribute == 'CODECS':
             value = getValueCodecs(tag, attribute)
@@ -205,7 +235,7 @@ def sortFile(lines: list[str], attribute: str) -> tuple[list, list]:
 
         # Since we push the index of the given tag_type to the heap, it will keep the same tags
         # together while also sorting those tags based on their attribute values.
-        heappush(heap, (current_tags_types.index(tag_type), value, tag))
+        heappush(heap, (current_tags_types.index(tag_type), value, tag)) # O(log(N))
     return (heap, no_attr)
 
 '''
@@ -219,6 +249,10 @@ Args:
 
 Returns:
     None since the file is written to within the function. Nothing to return.
+
+Time Complexity: O(N)
+    N: Number of lines in the file
+Space Complexity: O(1)
 '''
 def writeToNewFile(heap: list, no_attrs: list) -> None:
     new_file = open('sorted_file.m3u8', 'w')
@@ -245,8 +279,20 @@ def writeToNewFile(heap: list, no_attrs: list) -> None:
     new_file.close()
     return
 
-filename = downloadFile()
-lines = cleanFile(filename)
-attribute = getAttribute()
-heap, no_attrs = sortFile(lines, attribute)
-writeToNewFile(heap, no_attrs)
+filename = downloadFile() # O(1)
+lines = cleanFile(filename) # O(N)
+attribute = getAttribute() # O(1)
+heap, no_attrs = sortFile(lines, attribute) # O(N + M)
+writeToNewFile(heap, no_attrs) # O(1)
+
+'''
+Total Time Complexity of Process:
+    k + N + 1 + N + Nlog(N) = Nlog(N) + 2N + k + 1 
+                            ~= O(Nlog(N))
+
+Total Space Complexity of Process:
+    N + M + N + 1 + 1 + 1 = 2N + M + 3
+                         ~= O(2N + M)
+                         ~= O(N + M)
+
+'''
