@@ -279,11 +279,11 @@ def writeToNewFile(heap: list, no_attrs: list) -> None:
     new_file.close()
     return
 
-filename = downloadFile() # O(1)
-lines = cleanFile(filename) # O(N)
-attribute = getAttribute() # O(1)
-heap, no_attrs = sortFile(lines, attribute) # O(N + M)
-writeToNewFile(heap, no_attrs) # O(1)
+filename = downloadFile()
+lines = cleanFile(filename)
+attribute = getAttribute()
+heap, no_attrs = sortFile(lines, attribute)
+writeToNewFile(heap, no_attrs)
 
 '''
 Total Time Complexity of Process:
