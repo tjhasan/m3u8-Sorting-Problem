@@ -40,3 +40,5 @@ The second prompt will ask for a valid attribute to conduct the sorting with. An
 * FRAME-RATE
 
 If an invalid attribute is given, then the program will return an error message and exit.
+
+Provided that valid inputs are given to the two prompts above, the program will create a new file called `sorted_file.m3u8` which contains all of the contents of the original `.m3u8` file, except with all of its tags sorted, from smallest to largest, given the provided attribute.
