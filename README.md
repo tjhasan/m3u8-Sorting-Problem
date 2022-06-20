@@ -17,7 +17,7 @@ However, in the scenario in which you would like to compile the code without exe
 foo@bar:~/m3u8-Sorting-Problem/$ python -m compileall
 ```
 
-This will create a director called `__pycache__` which will contain a `.pyc` file. This is the compiled code for the `main.py` file.
+This will create a directory called `__pycache__` which will contain a `.pyc` file. This is the compiled code for the `main.py` file.
 
 If you would like to run the compile code, please use the following command:
 ```console
@@ -27,7 +27,7 @@ foo@bar:~/m3u8-Sorting-Problem/$ python .\__pycache__\<name of compile file>.pyc
 ### Using The Solution
 After running the program, you will be prompted twice.
 
-The first prompt will ask for a valid download link. For this program, a link is considered valid if the it would result in downloading a `.m3u8 file.` Any links provided that would *not* result in a `.m3u8` file will be caught and the program will exit after returning an error message.
+The first prompt will ask for a valid download link. For this program, a link is considered valid if it would result in downloading a `.m3u8 file.` Any links provided that would *not* result in a `.m3u8` file will be caught and the program will exit after returning an error message.
 
 The second prompt will ask for a valid attribute to conduct the sorting with. An attribute is considered valid if it is one of the following (**not** case-sensitive):
 * GROUP-ID 
@@ -41,4 +41,4 @@ The second prompt will ask for a valid attribute to conduct the sorting with. An
 
 If an invalid attribute is given, then the program will return an error message and exit.
 
-Provided that valid inputs are given to the two prompts above, the program will create a new file called `sorted_file.m3u8` which contains all of the contents of the original `.m3u8` file, except with all of its tags sorted, from smallest to largest, given the provided attribute.
+Provided that valid inputs are given to the two prompts, the program will create a new file called `sorted_file.m3u8` which contains all of the contents of the original `.m3u8` file, except with all of its tags sorted, from smallest to largest, given the provided attribute.
