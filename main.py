@@ -115,7 +115,7 @@ def splitFile(lines: list[str], attribute: str) -> tuple[list[str], list[str]]:
         else:
             # Edge case in which we want to keep the vod.m3u8 lines coupled with the #EXT-X-STREAM-INF tag
             if lines[i].startswith("#EXT-X-STREAM-INF"):
-                has_attr.append(lines[i] + lines[i+1])
+                no_attr.append(lines[i] + lines[i+1])
                 # The following line will be the vod.m3u8 line. Since we are adding that to the current line, skip the next one.
                 i += 2
             else:
